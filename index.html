@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to Pdf</title>
+</head>
+<body>
+    
+
+
+
+<script>
+
+  
+  
+  function convertHtmlToPdf(htmlContent) {
+    // Create a new window or iframe
+    const printWindow = window.open('', '_blank');
+    
+    // Write the HTML content to the new window
+    printWindow.document.open();
+    printWindow.document.write("&lt;html>&lt;head>&lt;/head>&lt;body>"+htmlContent+"&lt;/body>&lt;/html>");
+    console.log(htmlContent)
+    
+
+    // Delay before generating PDF content
+  window.setTimeout(function() {
+  // Create a new empty array to store the PDF content
+const content = [];
+
+// Add the PDF header
+content.push("%PDF-1.7");
+
+// Add a new page
+content.push("1 0 obj");
+content.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.276 841.890] /Contents 3 0 R >>");
+content.push("endobj");
+
+// Add the content stream
+content.push("3 0 obj");
+content.push("<< /Length 56 >>");
+content.push("stream");
+content.push("BT");
+content.push("/F1 24 Tf");
+content.push("1 0 0 1 50 700 Tm");
+content.push(`(${htmlContent}) Tj`);
+content.push("ET");
+content.push("endstream");
+content.push("endobj");
+
+// Add the page reference to the catalog
+content.push("2 0 obj");
+content.push("<< /Type /Pages /Kids [1 0 R] /Count 1 >>");
+content.push("endobj");
+
+// Add the catalog and cross-reference table
+content.push("4 0 obj");
+content.push("<< /Type /Catalog /Pages 2 0 R >>");
+content.push("endobj");
+content.push("xref");
+content.push("0 5");
+content.push("0000000000 65535 f");
+content.push("0000000009 00000 n");
+content.push("0000000054 00000 n");
+content.push("0000000108 00000 n");
+content.push("0000000167 00000 n");
+content.push("trailer");
+content.push("<< /Size 5 /Root 4 0 R >>");
+content.push("startxref");
+content.push("226");
+content.push("%%EOF");
+
+// Convert the content array to a string
+const pdfContent = content.join("\n");
+
+// Download the PDF file
+const blob = new Blob([pdfContent], { type: "application/pdf" });
+const url = URL.createObjectURL(blob);
+const link = document.createElement("a");
+link.href = url;
+link.download = "hello_world.pdf";
+link.click();
+
+  }, 1000); // Delay in milliseconds
+  }
+  
+  
+function printToPDF(){
+  const message = document.querySelector('#message');
+  console.log(message.innerHTML)
+  convertHtmlToPdf(message.value)
+  
+  // window.print();
+  
+}
+
+</script>
+
+<textarea name="" id="message" cols="30" rows="10"></textarea>
+
+<button class="printNone" onClick="printToPDF()">Convert to Pdf</button>
+<h3></h3>
+
+<input class="printNone" value="<h1>Wokring</h1>"></input>
+
+
+<h3>Html to PDF Convertor Pure JS</h3>
+
+
+
+
+</body>
+</html>
